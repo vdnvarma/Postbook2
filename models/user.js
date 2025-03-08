@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Load default image as Buffer
-const defaultImagePath = path.join(__dirname, "./images/default.png");
+const defaultImagePath = path.join(__dirname, "/images/default.png");
 const defaultImage = fs.readFileSync(defaultImagePath);
 
 const userSchema = mongoose.Schema({
