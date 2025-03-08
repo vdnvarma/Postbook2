@@ -22,7 +22,7 @@
         <h3 class="text-3xl mb-5"><span class="font-light">Profile</h3>
         <div class="flex flex-col gap-3">
             <div class="w-[200px] h-[200px] rounded-md">
-                <img src="<%= user.profilepic ? '/profilepic/' + user.profilepic : './images/default.png' %>" alt="Profile Picture">
+                <img src="data:<%= user.profilepic.contentType %>;base64,<%= user.profilepic.data.toString('base64') %>" alt="Profile Picture">
             </div> 
             <form method="get">
                 <div class="flex flex-col gap-3 w-1/4">
