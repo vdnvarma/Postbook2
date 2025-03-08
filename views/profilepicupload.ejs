@@ -14,9 +14,6 @@
         <div class="w-full flex justify-begin">
             <a class="bg-zinc-700 rounded-3xl px-3 py-2 text-sm mb-5 inline-block" href="/edituser/<%= user._id %>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
         </div>
-        <div class="w-full flex justify-end">
-            <a class="bg-zinc-800 rounded-md px-3 py-2 text-sm mb-5 inline-block" href="/login">Login</a>
-        </div>
         <h3 class="text-3xl mb-5">Upload file</h3>
         <form action="/upload" method="post" enctype="multipart/form-data">
             <input type="file" name="image">
