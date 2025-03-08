@@ -1,19 +1,9 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+const fs = require("fs");
+const path = require("path");
 
-const MONGO_URI = process.env.MONGO_URI
-
-if (!MONGO_URI) {
-  console.error("❌ MongoDB URI is undefined! Check your environment variables.");
-  process.exit(1);
-}
-
-// Connect to MongoDB
-mongoose.connect(MONGO_URI).then(() => {
-  console.log("✅ MongoDB Connected");
-}).catch(err => {
-  console.error("❌ MongoDB Connection Error:", err);
-});
+// Load default image as Buffer
+const defaultImagePath = path.join("./images", "default.png");
+const defaultImage = fs.readFileSync(defaultImagePath);
 
 const userSchema = mongoose.Schema({
     username: String,
@@ -26,6 +16,17 @@ const userSchema = mongoose.Schema({
         contentType: String
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }]
+});
+
+// Middleware to set default profile picture if not provided
+userSchema.pre("save", function (next) {
+    if (!this.profilepic || !this.profilepic.data) {
+        this.profilepic = {
+            data: defaultImage,
+            contentType: "image/png"
+        };
+    }
+    next();
 });
 
 module.exports = mongoose.model("user", userSchema);

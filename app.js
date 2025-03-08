@@ -75,15 +75,18 @@ app.post('/upload', isLoggedIn, upload.single("image"), async (req, res) => {
     return res.redirect(`/profile/${user._id}`);
 });
 
-app.get('/profilepic/:id', async (req, res) => {
-    let user = await userModel.findOne({ _id: req.params.id });
-
-    if (!user || !user.profilepic.data) {
-        return res.status(404).send("No profile picture found.");
+app.get("/profilepic/:id", async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (user && user.profilepic && user.profilepic.data) {
+            res.contentType(user.profilepic.contentType);
+            return res.send(user.profilepic.data);
+        } else {
+            res.status(404).send("No profile picture found");
+        }
+    } catch (err) {
+        res.status(500).send("Error fetching profile picture");
     }
-
-    res.set("Content-Type", user.profilepic.contentType);
-    res.send(user.profilepic.data);
 });
 
 
