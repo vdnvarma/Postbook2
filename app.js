@@ -65,10 +65,27 @@ app.post('/upload', isLoggedIn, upload.single("image"), async (req, res) => {
         return res.status(404).send("User not found.");
     }
 
-    user.profilepic = req.file.filename;
+    // Store image as Buffer in MongoDB
+    user.profilepic = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype
+    };
+
     await user.save();
     return res.redirect(`/profile/${user._id}`);
 });
+
+app.get('/profilepic/:id', async (req, res) => {
+    let user = await userModel.findOne({ _id: req.params.id });
+
+    if (!user || !user.profilepic.data) {
+        return res.status(404).send("No profile picture found.");
+    }
+
+    res.set("Content-Type", user.profilepic.contentType);
+    res.send(user.profilepic.data);
+});
+
 
 app.get('/like/:id', isLoggedIn, async (req,res) => {
     let post = await postModel.findOne({_id: req.params.id}).populate("user");
