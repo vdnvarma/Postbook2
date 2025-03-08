@@ -1,9 +1,18 @@
-require('dotenv').config();  // Load environment variables
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB Atlas"))
-  .catch(err => console.error("MongoDB Connection Error:", err));
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ MongoDB URI is undefined! Check your environment variables.");
+  process.exit(1);
+}
+
+mongoose.connect(MONGO_URI).then(() => {
+  console.log("✅ MongoDB Connected");
+}).catch(err => {
+  console.error("❌ MongoDB Connection Error:", err);
+});
 
 
 const userSchema = mongoose.Schema({
