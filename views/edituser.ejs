@@ -18,7 +18,7 @@
         <form method="post" action="/updateuser/<%= user._id %>">
             <div class="relative">
                 <div class="relative w-[200px] h-[200px] rounded-md overflow-hidden">
-                    <img class="w-full h-full object-cover" src="/images/uploads/<%= user.profilepic %>" alt="">
+                    <img src="<%= user.profilepic ? '/profilepic/' + user.profilepic : '/images/default.png' %>" alt="Profile Picture">
                     <a class="bg-zinc-700 rounded-3xl px-3 py-2 text-sm absolute bottom-2 right-2 z-10" 
                        href="/edituser/<%= user._id %>/upload">
                         <i class="fa fa-pencil text-white" aria-hidden="true"></i>
