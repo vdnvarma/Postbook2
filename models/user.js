@@ -1,39 +1,47 @@
-const path = require("path");
+require("dotenv").config();
+const mongoose = require("mongoose");
 const fs = require("fs");
+
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ MongoDB URI is undefined! Check your environment variables.");
+  process.exit(1);
+}
+
+// Connect to MongoDB
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB Connected");
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err);
+  });
 
 // Correct path relative to the `models` folder
 const defaultImagePath = "./public/images/uploads/default.png";
+let defaultImageBuffer = null;
+let defaultImageType = "image/png"; // Change based on the file type
 
-let defaultImage;
-try {
-    defaultImage = fs.readFileSync(defaultImagePath);
-} catch (err) {
-    console.error("❌ Default image not found at:", defaultImagePath);
-    process.exit(1);
+if (fs.existsSync(defaultImagePath)) {
+  defaultImageBuffer = fs.readFileSync(defaultImagePath);
+} else {
+  console.error("❌ Default profile image not found at:", defaultImagePath);
 }
 
+// Define User Schema
 const userSchema = mongoose.Schema({
-    username: String,
-    name: String,
-    age: Number,
-    email: String,
-    password: String,
-    profilepic: {
-        data: Buffer,
-        contentType: String
-    },
-    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }]
-});
-
-// Middleware to set default profile picture if not provided
-userSchema.pre("save", function (next) {
-    if (!this.profilepic || !this.profilepic.data) {
-        this.profilepic = {
-            data: defaultImage,
-            contentType: "image/png"
-        };
-    }
-    next();
+  username: String,
+  name: String,
+  age: Number,
+  email: String,
+  password: String,
+  profilepic: {
+    data: { type: Buffer, default: defaultImageBuffer },
+    contentType: { type: String, default: defaultImageType },
+  },
+  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
 });
 
 module.exports = mongoose.model("user", userSchema);
