@@ -1,9 +1,16 @@
-const fs = require("fs");
 const path = require("path");
+const fs = require("fs");
 
-// Load default image as Buffer
-const defaultImagePath = path.join(__dirname, "/images/default.png");
-const defaultImage = fs.readFileSync(defaultImagePath);
+// Correct path relative to the `models` folder
+const defaultImagePath = path.join(__dirname, ".../images/default.png");
+
+let defaultImage;
+try {
+    defaultImage = fs.readFileSync(defaultImagePath);
+} catch (err) {
+    console.error("❌ Default image not found at:", defaultImagePath);
+    process.exit(1);
+}
 
 const userSchema = mongoose.Schema({
     username: String,
