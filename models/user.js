@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 
 // Correct path relative to the `models` folder
-const defaultImagePath = path.join(__dirname, ".../images/default.png");
+const defaultImagePath = path.join(__dirname, "./public/images/default.png");
 
 let defaultImage;
 try {
