@@ -3,22 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload image</title>
-    <link rel="stylesheet" href="../stylesheets/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Upload Profile Picture - Postbook</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    
-    <div class="w-full min-h-screen bg-zinc-900 p-10 text-white">
-        <div class="w-full flex justify-begin">
-            <a class="bg-zinc-700 rounded-3xl px-3 py-2 text-sm mb-5 inline-block" href="/edituser/<%= user._id %>"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    <div class="container fade-in">
+        <div class="nav">
+            <a href="/edituser/<%= user._id %>" class="nav-back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
         </div>
-        <h3 class="text-3xl mb-5">Upload file</h3>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="image">
-            <input class="px-5 py-2 rounded-md bg-blue-500" type="submit" value="Upload File">
-        </form>
+        
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <i class="fas fa-camera" style="font-size: 3rem; color: #3b82f6; margin-bottom: 16px;"></i>
+                <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Upload Profile Picture</h1>
+                <p style="color: #9ca3af; font-size: 1.1rem;">Choose a new profile picture for your account</p>
+            </div>
+            
+            <div class="file-upload">
+                <form action="/upload" method="post" enctype="multipart/form-data" style="max-width: none;">
+                    <div class="form-group">
+                        <label for="image" class="btn btn-secondary" style="width: 100%; cursor: pointer;">
+                            <i class="fas fa-image" style="margin-right: 8px;"></i>
+                            <span id="file-chosen">Choose a File</span>
+                        </label>
+                        <input type="file" id="image" name="image" accept="image/*" style="display: none;" required onchange="document.getElementById('file-chosen').textContent = this.files[0] ? this.files[0].name : 'Choose a File';">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-upload"></i>
+                        Upload Picture
+                    </button>
+                </form>
+            </div>
+            
+            <div style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #374151;">
+                <p style="color: #9ca3af; font-size: 0.9rem;">
+                    <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
+                    Supported formats: JPG, PNG, GIF (Max size: 5MB)
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 </html>

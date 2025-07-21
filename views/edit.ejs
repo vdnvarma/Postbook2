@@ -3,20 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit posts</title>
-    <link rel="stylesheet" href="../stylesheets/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Edit Post - Postbook</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="w-full min-h-screen bg-zinc-900 p-10 text-white">
-        <h5 class="mb-5">Edit your post.</h5>
-        <form method="post" action="/update/<%= post._id %>">
-            <textarea placeholder="What's in your mind ?" class=" p-3 w-1/3 resize-none outline-none rounded-md bg-transparent border-2 border-zinc-800" name="content"><%= post.content %></textarea>
-            <div class="flex gap-8 mt-2">
-                <input class="px-3 py-2 bg-yellow-500 rounded-md text-black block w-40" type="submit" value="Update Post">
-                <a class="px-3 py-2 bg-red-500 rounded-md w-40 h-30 flex justify-center inline-block" href="/delete/<%= post._id %>">Delete</a>
-            </div>
-        </form>     
+    <div class="container fade-in">
+        <div class="nav">
+            <a href="/dashboard" class="nav-back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                <i class="fas fa-edit" style="margin-right: 12px;"></i>
+                Edit Post
+            </h1>
+            <p style="color: #9ca3af; font-size: 1.1rem; margin-bottom: 32px;">Update your post content</p>
+            
+            <form method="post" action="/update/<%= post._id %>" style="max-width: none;">
+                <div class="form-group">
+                    <textarea id="content" placeholder="What's on your mind?" name="content" class="form-input" required><%= post.content %></textarea>
+                    <label for="content" class="form-label">Post Content</label>
+                </div>
+                
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px;">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-save"></i>
+                        Update Post
+                    </button>
+                    <a href="/delete/<%= post._id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post? This action cannot be undone.')">
+                        <i class="fas fa-trash"></i>
+                        Delete Post
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

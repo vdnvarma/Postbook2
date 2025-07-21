@@ -25,7 +25,7 @@ app.get('/login', (req,res) => {
 });
 
 app.post('/register', async (req,res) =>{
-    let {email, password, username, name, age} = req.body;
+    let {email, password, username} = req.body;
     let user = await userModel.findOne({email});
     if(user) return res.status(500).send("User already registered");
 
@@ -34,8 +34,7 @@ app.post('/register', async (req,res) =>{
             let user = await userModel.create({
                 username,
                 email,
-                age,
-                name,
+                name: username,
                 password: hash
             });
             let token = jwt.sign({email: email, userid: user._id}, "shhhh");
@@ -46,8 +45,12 @@ app.post('/register', async (req,res) =>{
 });
 
 app.get('/dashboard', isLoggedIn, async (req,res) => {
-    let user = await userModel.findOne({email: req.user.email}).populate("posts");
-    res.render('dashboard',{user},);
+    let userDoc = await userModel.findOne({email: req.user.email}).populate("posts");
+    if (!userDoc) {
+        return res.redirect('/login');
+    }
+    const user = userDoc.toObject();
+    res.render('dashboard', { user });
 });
 
 app.get('/edituser/:id/upload', async (req,res) => {

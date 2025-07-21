@@ -42,6 +42,13 @@ const userSchema = mongoose.Schema({
     contentType: { type: String, default: defaultImageType },
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+userSchema.virtual('nameIsDefault').get(function() {
+  return this.name === this.username;
 });
 
 module.exports = mongoose.model("user", userSchema);
